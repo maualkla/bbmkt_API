@@ -92,7 +92,7 @@ var unifiedServer = function(req, res){
 };
 
 
-// sample output object
+// sample output output_object
 var output_object = {
 	'timestamp': Date.now(),
 	'connection': 'Stablished',
