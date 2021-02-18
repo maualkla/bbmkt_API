@@ -5,7 +5,7 @@
  * Created: feb 17, 2021
  */
 
-var enviroments == {};
+var enviroments = {};
 
 // Staging enviroment
 enviroments.staging = {
