@@ -26,7 +26,7 @@ httpServer.listen(config.httpPOrt, function(){
 
 // Instanciate the https server
 var httpsServerOptions = {
-	'key': fs.readFilesync("./sslcert/privkey.pem"),
+	'key': fs.readFileSync("./sslcert/privkey.pem"),
 	'cert': fs.readFileSync("./sslcert/cacert.pem")
 };
 
