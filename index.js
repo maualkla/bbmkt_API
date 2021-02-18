@@ -10,7 +10,7 @@
 const http = require("http");
 const https = require("https");
 const url = require("url");
-const stringDecoder = require("string_decoder").StringDecoder;
+const StringDecoder = require("string_decoder").StringDecoder;
 const config = require("./config");
 const fs = require("fs");
 
@@ -20,7 +20,7 @@ var httpServer = http.createServer(function(req, res){
 });
 
 // Start http server getting the port from the config.js file
-httpServer.listen(config.httpPOrt, function(){
+httpServer.listen(config.httpPort, function(){
 	console.log(" ----> Server listening in port " + config.httpPort + " in " + config.envName + " enviroment. ");
 });
 
@@ -40,9 +40,11 @@ httpsServer.listen(config.httpsPort, function(){
 });
 
 // Unified logic for the for the http and https servers.
-var unifiedServer = unifiedServer = function(req, res){
+var unifiedServer = function(req, res){
+
+	//console.log(" ----> Entrando...");
 	// Get the URL and parse it.
-	var parsedUrl = url.parse(req, url, true);
+	var parsedUrl = url.parse(req.url, true);
 	// Get Url path.
 	var path = parsedUrl.pathname;
 	var trimmedPath = path.replace(/^\/+|\/+$/g,'');
@@ -70,7 +72,8 @@ var unifiedServer = unifiedServer = function(req, res){
 			'headers': headers,
 			'payload': buffer
 		}
-		chosenHandler(data, function(stautsCode, payload){
+		console.log(" ----> Input call details:", data);
+		chosenHandler(data, function(statusCode, payload){
 			// Use the status code called back by the handler, or default to 200
 			status = typeof(statusCode) == 'number' ? statusCode : 200;
 			// Use the payload called back by the handler or default to an empty object.
@@ -85,13 +88,24 @@ var unifiedServer = unifiedServer = function(req, res){
 			console.log("----> returning this response: ", statusCode, payloadString);
 		});
 	});
+	//console.log(" ----> Saliendo...");
 };
+
+
+// sample output object
+var output_object = {
+	'timestamp': Date.now(),
+	'connection': 'Stablished',
+	'api_version': '0.0.1',
+	'host': 'mybabystuff.mx'
+};
+
 
 // Define the handlers
 var handlers = {};
 // Connected Handler
 handlers.connected = function(data, callback){
-	callback(200);
+	callback(200, output_object);
 };
 // Not found handler
 handlers.notFound = function(data, callback){
